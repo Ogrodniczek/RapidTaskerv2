@@ -1,0 +1,113 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %} Rapid Tasker {% endblock %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<title>RapidTasker</title>
+<!-- <script type="text/javascript" src="{{ url_for('static', filename='jquery-2.1.1.min.js') }}"></script>-->
+{% endblock head %}
+
+{% block navbar %}
+<!-- TOP NAVBAR -->
+<nav class="navbar navbar-inverse navbar-static-top">
+  <div class="container-fluid">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a href="{{url_for('index')}}" class="navbar-text"><b>RapidTasker</b></a>
+      </div>
+      {% if current_user.is_authenticated() %} 
+      <ul class="nav navbar-nav">
+        <!-- FILTERING -->
+        <li class="active"><a>Filter by</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            Priority <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="{{url_for('filter_by', key="priority", value="1")}}">1</a></li>
+            <li><a href="{{url_for('filter_by', key="priority", value="2")}}">2</a></li>
+            <li><a href="{{url_for('filter_by', key="priority", value="3")}}">3</a></li> 
+            <li><a href="{{url_for('filter_by', key="priority", value="4")}}">4</a></li> 
+            <li><a href="{{url_for('filter_by', key="priority", value="5")}}">5</a></li> 
+            <li class="divider"></li>
+            <li><a href="{{url_for('index')}}">Show all</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            Status <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="{{url_for('filter_by', key="state", value="to do")}}">To do</a></li>
+            <li><a href="{{url_for('filter_by', key="state", value="ongoing")}}">Ongoing</a></li>
+            <li><a href="{{url_for('filter_by', key="state", value="done")}}">Done</a></li> 
+            <li class="divider"></li>
+            <li><a href="{{url_for('index')}}">Show all</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            User <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="{{url_for('filter_by', key="claimer", value="me")}}">Claimed by me</a></li>
+            <li><a href="{{url_for('filter_by', key="requestor", value="me")}}">Requested by me</a></li>
+            <li><a href="{{url_for('filter_by', key="claimer", value="free")}}">Not claimed</a></li>
+            <li class="divider"></li>
+            <li><a href="{{url_for('index')}}">Show all</a></li> 
+          </ul>
+        </li>
+        <!-- SORTING -->
+        <li class="active"><a>Sort by</a></li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            Date of creation <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="asc"><a href="{{url_for('sort', sorter="timestamp", reverse="0")}}">Ascending</a></li> 
+            <li class="desc"><a href="{{url_for('sort', sorter="timestamp", reverse="1")}}">Descending</a></li> 
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            Priority <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="asc"><a href="{{url_for('sort', sorter="severity", reverse="0")}}">Ascending</a></li>
+            <li class="desc"><a href="{{url_for('sort', sorter="severity", reverse="1")}}">Descending</a></li>
+          </ul>
+        </li>
+        <li class="dropdown">
+          <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+            State <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li class="asc"><a href="{{url_for('sort', sorter="state", reverse="0")}}">Ascending</a></li>
+            <li class="desc"><a href="{{url_for('sort', sorter="state", reverse="1")}}">Descending</a></li>
+          </ul>
+        </li>
+      </ul>
+      {% endif %}
+      <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+        {% if current_user.is_authenticated() %}
+        <li><a href="{{url_for('logout')}}"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li>
+        {% else %}
+        <li><a href="{{url_for('login')}}"><span class="glyphicon glyphicon-log-in"></span> Login </a></li>
+        {% endif %}
+        </ul>
+      </ul>
+    </div>
+  </div>
+</nav>
+{% endblock navbar%}
+
+{% block content %}
+<div class="container">
+  {% block page_content %}
+  <!-- BLOCK CONTENT HERE -->
+  {% endblock page_content %}
+</div>
+{% endblock %}

@@ -1,0 +1,88 @@
+[priority='1'] {    background-color: #FF0000 !important;   }
+[priority='2'] {    background-color: #DD3300 !important;   }
+[priority='3'] {    background-color: #DD8855 !important;   }
+[priority='4'] {    background-color: #DDAA77 !important;   }
+[priority='5'] {    background-color: #999999 !important;   }
+
+.panel-heading[state='done']    {  background-color: #00CC00 !important;    }
+.panel-heading[state='ongoing'] {   background-color: #DBFF70 !important;   }
+
+a .panel-heading {
+    font-weight: bold;
+    color: black;
+}
+
+a:hover {
+    text-decoration: none !important;
+}
+
+.panel-heading[state='done']:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e013";
+    float: right;
+    color: black;
+}
+
+.panel-heading[state='ongoing']:after {
+    font-family: 'Glyphicons Halflings';
+    content: "\e136";
+    float: right;
+    color: black;
+}
+
+.list-group {
+    margin-bottom: 0;
+}
+
+.list-group-item {
+    padding: 5px 10px;
+}
+
+.dropdown-menu li.asc > a:after { 
+    font-family: 'Glyphicons Halflings';
+    content: "\e113";
+    display: inline;
+    color: black;
+    position: absolute;
+    left: 100%;
+    margin-left: -2em;
+} 
+
+.dropdown-menu li.desc > a:after { 
+    font-family: 'Glyphicons Halflings';
+    content: "\e114";
+    display: inline;
+    color: black;
+    position: absolute;
+    left: 100%;
+    margin-left: -2em;
+} 
+
+.jumbotron {
+    padding: 10px;
+}
+
+body { 
+    padding-bottom: 70px; 
+}
+
+textarea {
+    resize: vertical;
+}
+
+select:required:invalid {
+    color: gray;
+}
+option[value=""][disabled] {
+    display: none;
+}
+option {
+    color: black;
+}
+.person-template {
+}
+.person-template span{
+    position: relative;
+    padding-top: 6px;
+    width: 260px;
+}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Rapid Tasker{% endblock %}
+
+{% block page_content %}
+    <form action="{{url_for('login')}}" method="POST" role="form">
+      <div class="form-group {{'has-error' if form.username.errors}}">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          {{form.username(class="form-control", placeholder=form.username.label.text)}}
+        </div>
+        {% if form.username.errors %}
+          <span class="help-block">
+          {% for error in form.username.errors %}
+            {{ error }}
+            <br>
+          {% endfor %}
+          </span>
+        {% endif %}
+      </div>
+      <div class="form-group {{'has-error' if form.password.errors}}">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          {{form.password(class="form-control", placeholder=form.password.label.text)}}
+        </div>
+        {% if form.password.errors %}
+          <span class="help-block">
+          {% for error in form.password.errors %}
+            {{ error }}
+            <br>
+          {% endfor %}
+          </span>
+        {% endif %}
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Access</button>
+    </form>
+{% endblock %}

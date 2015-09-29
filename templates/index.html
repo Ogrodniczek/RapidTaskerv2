@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %} Rapid Tasker {% endblock %}
+
+{% block page_content %}
+
+<!-- SUBMIT FORM -->
+<div class="jumbotron">
+  <form action="{{url_for('new_task')}}" method="POST" role="form">
+    <div class="row">
+      <div class="col-md-8">
+        <input type="text" class="form-control" name="title" placeholder="Task title" minlength="5" maxlength="255" required>
+      </div>  
+      <div class="col-md-2 form-group">
+        <select class="form-control" name="priority" required>
+          <option value="" disabled selected>Priority
+          <option value="1">1
+          <option value="2">2
+          <option value="3">3
+          <option value="4">4
+          <option value="5">5
+        </select>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+      </div>
+    </div>
+    <div class="form-group">
+      <textarea type="text" class="form-control" name="description" placeholder="Task description" minlength="5" maxlength="2000"required></textarea>
+    </div>
+  </form>
+</div>
+
+<!-- CURRENT TASKS -->
+<div class="accordion" id="accordion2">
+<div class="accordion-group panel-group">
+{% for task in tasks %}
+<div class="panel panel-default" id={{ task.id }} >
+<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse_{{ task.id }}">
+  <div class="accordion-heading panel-heading" id={{ task.id }} priority={{ task.severity }} state={{ task.state }}>{{task.title}}</div></a>
+    <div id="collapse_{{ task.id }}" class="accordion-body collapse out">
+      <div class="accordion-inner panel-body">
+        {{ task.description | safe }}
+      </div>
+    </div>
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-md-3">
+          <ul class="list-group">
+            {% if task.state == 'done' %}
+            <li class="list-group-item list-group-item-success">
+              <span class="glyphicon glyphicon-time" data-toogle="tooltip" title="Last update"> {{ task.last_update_date }} </span>
+            </li>  
+            {% else %}
+            <li class="list-group-item list-group-item-danger">
+              <span class="glyphicon glyphicon-time" data-toogle="tooltip" title="Time added"> {{ task.create_date }} </span>
+            </li>
+            {% endif %}      
+          </ul>
+        </div>
+        <div class="col-md-6">
+            <!--<span class="list-group-item list-group-item-danger"</span>-->
+            <span class="person-template"><span class="glyphicon glyphicon-edit" data-toogle="tooltip" title="Requestor"> {{ task.requestor.username }} </span>
+            {% if task.claimer.username != null %}
+            <!--<span class="list-group-item list-group-item-success"</span>-->
+            <span class="glyphicon glyphicon-share" data-toogle="tooltip" title="Claimer"> {{ task.claimer.username }} </span></span>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+          {% if task.state == "to do" %}
+          <form action="{{url_for('modify_task')}}" method="POST" role="form">
+            <input type="hidden" name="task_id" value="{{task.id}}">
+            <input type="hidden" name="task_state" value="ongoing">
+            <input type="hidden" name="task_claimer" value="{{current_user.id}}">
+            <button type="submit" class="btn btn-info btn-sm pull-right">
+              <span class="glyphicon glyphicon-plus-sign"></span> CLAIM
+            </button>
+          </form>
+
+          {% elif task.state == 'ongoing' and task.claimer_id == current_user.id %}
+          <form action="{{url_for('modify_task')}}" method="POST" role="form">
+            <input type="hidden" name="task_id" value="{{task.id}}">
+            <input type="hidden" name="task_state" value="done">
+            <input type="hidden" name="task_claimer" value="{{current_user.id}}">
+            <button type="submit" class="btn btn-success btn-sm pull-right">
+              <span class="glyphicon glyphicon-ok-sign"></span> DONE
+            </button>
+          </form>
+          <form action="{{url_for('modify_task')}}" method="POST" role="form">
+            <input type="hidden" name="task_id" value="{{task.id}}">
+            <input type="hidden" name="task_state" value="to do">
+            <input type="hidden" name="task_claimer" value="">
+            <button type="submit" class="btn btn-warning btn-sm pull-right">
+              <span class="glyphicon glyphicon-minus-sign"></span> UNCLAIM
+            </button>
+          </form>
+          {% endif %}
+
+          {% if task.requestor_id == current_user.id %}
+          <form action="{{url_for('delete_task')}}" method="POST" role="form">
+            <input type="hidden" name="task_id" value="{{task.id}}">
+            <button type="submit" class="btn btn-danger btn-sm pull-right">
+              <span class="glyphicon glyphicon-remove-sign"></span> DELETE
+            </button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+{% endfor %}
+</div>
+</div>
+{% endblock %}
